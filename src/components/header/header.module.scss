@@ -1,0 +1,12 @@
+.header {
+  width: 100%;
+  position: fixed;
+}
+
+.headerContainer {
+  padding: .5rem;
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
