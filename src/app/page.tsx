@@ -1,14 +1,19 @@
-import Container from '@/components/container/Container';
+import Container from '@/components/ui/container/Container';
 import { Button, Input, TextField } from '@mui/material';
 import Header from '@/components/header/Header';
+import Main from '@/components/ui/main/Main';
+import TextScreen from '@/components/text-screen/TextScreen';
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main>
-        <Button variant="contained">Сгенерировать дорожку</Button>
-      </main>
+      <Main>
+        <Container>
+          <Button variant="contained">Сгенерировать дорожку</Button>
+          <TextScreen />
+        </Container>
+      </Main>
     </>
   );
 }
