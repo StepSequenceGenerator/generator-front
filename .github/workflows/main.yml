@@ -1,34 +1,74 @@
-name: Deploy via FTP
+name: Deploy server front
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main
+      - "main"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4  # Updated to v3
 
-      # - name: Install dependencies
-      #   uses: "php-actions/composer@v6"
-      #   with:
-      #     args: "--optimize-autoloader --no-dev"
-
-      - name: Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4  # Updated to v3
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/.gitignore**
-            **/node_modules/**
-            **/.github/**
-            **/.vscode/**
-            **/.editorconfig**
+          node-version: 22
+          #registry-url: https://npm.pkg.github.com/
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Remove old folder
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DESTINATION_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: "rm -rf /home/genry_bolit/sg-front/old"
+
+      - name: Copy files to serve
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DESTINATION_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          rm: true
+          source: "ecosystem.config.js,package.json,srt/*,src/db/migrations/*,public/*,dist/*,views/*,node_modules/*"
+          target: "/home/${{ secrets.SSH_USERNAME }}/sg-front/next"
+
+
+      - name: Copy .env
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DESTINATION_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: "cp /home/genry_bolit/sg-front/.env /home/genry_bolit/sg-front/next/.env"
+
+      - name: Move folders
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DESTINATION_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: "mv /home/genry_bolit/front/current /home/genry_bolit/front/old && mv /home/genry_bolit/front/next /home/genry_bolit/front/current"
+
+      - name: Restart server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DESTINATION_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: "/home/genry_bolit/front/restart.sh"
