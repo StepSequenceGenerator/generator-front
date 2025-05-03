@@ -62,7 +62,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: "mv /home/genry_bolit/front/current /home/genry_bolit/front/old && mv /home/genry_bolit/front/next /home/genry_bolit/front/current"
+          script: "mv /home/genry_bolit/sg-front/current /home/genry_bolit/sg-front/old && mv /home/genry_bolit/sg-front/next /home/genry_bolit/sg-front/current"
 
       - name: Restart server
         uses: appleboy/ssh-action@v1.0.3
@@ -71,4 +71,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: "/home/genry_bolit/front/restart.sh"
+          script: "/home/genry_bolit/sg-front/restart.sh"
