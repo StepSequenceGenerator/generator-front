@@ -42,7 +42,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           rm: true
-          source: ".next/standalone/*,.next/static/*,public/*"
+          source: "ecosystem.config.js,.next/standalone/*,.next/static/*,public/*"
           target: "/home/${{ secrets.SSH_USERNAME }}/sg-front/next"
 
       - name: Copy .env
