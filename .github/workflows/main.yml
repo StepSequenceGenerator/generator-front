@@ -22,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Compile next.config.ts
-        run: npx tsx src/compile-next-config.ts
-
       - name: Build project
         run: npm run build
 
