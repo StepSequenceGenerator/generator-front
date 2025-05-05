@@ -1,6 +1,22 @@
 import style from './text-screen.module.scss';
+import { Movement } from '@/types/sg-api/response-types';
 
-export default function TextScreen() {
-  return <div className={style.textScreen}></div>;
+type TextScreenProps = {
+  stepSequence: Movement[]
+}
+
+export default function TextScreen(props: TextScreenProps) {
+  const { stepSequence } = props;
+  return (
+    <div className={style.textScreen}>
+      <ol>
+        {stepSequence.map((item) => (
+          <li key={item.id}>
+            {item.name}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
 }
 // 4175fd

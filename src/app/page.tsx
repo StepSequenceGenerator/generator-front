@@ -5,6 +5,7 @@ import Header from '@/components/header/Header';
 import Main from '@/components/ui/main/Main';
 import TextScreen from '@/components/text-screen/TextScreen';
 import { sgApi } from '@/api/sequence-generator/methods-sg-api';
+import {useState} from 'react';
 
 export default function Home() {
   const [stepSequence, setStepSequence] = useState<Movement[]>([]);
@@ -19,7 +20,7 @@ export default function Home() {
       <Main>
         <Container>
           <Button variant="contained" onClick={onGetSequence}>Сгенерировать дорожку</Button>
-          <TextScreen />
+          <TextScreen stepSequence={stepSequence} />
         </Container>
       </Main>
     </>

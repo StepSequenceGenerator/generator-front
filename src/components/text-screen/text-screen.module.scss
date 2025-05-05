@@ -1,12 +1,14 @@
 .textScreen {
   position: absolute;
+  margin-inline: 1rem;
   padding: .5rem;
-  width: 50%;
+
+  width: calc(100% - 2rem);
   min-height: 50%;
 
   top: 0;
   left: 0;
-  transform: translate(50%, 50%);
+  transform: translateY(50%);
 
   border: 1px solid var(--border-color);
 }
