@@ -19,4 +19,4 @@ interface Movement {
 
 type GetStepSequenceType =  Movement[];
 
-export {Movement, GetStepSequenceType}
+export type {Movement, GetStepSequenceType}

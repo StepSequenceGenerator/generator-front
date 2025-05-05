@@ -1,7 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
-import { prettier } from 'eslint-config-prettier';
+import prettier from 'eslint-config-prettier';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -17,7 +17,8 @@ const eslintConfig = [
       'no-console': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
-      'react/react-in-jsx-scope': 'off', // не нужен в Next.js
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'react/react-in-jsx-scope': 'off',
     },
   },
   prettier,
