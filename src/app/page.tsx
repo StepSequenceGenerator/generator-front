@@ -6,6 +6,7 @@ import Main from '@/components/ui/main/Main';
 import TextScreen from '@/components/text-screen/TextScreen';
 import { sgApi } from '@/api/sequence-generator/methods-sg-api';
 import {useState} from 'react';
+import type {Movement} from '@/types/sg-api/response-types'
 
 export default function Home() {
   const [stepSequence, setStepSequence] = useState<Movement[]>([]);
