@@ -16,19 +16,21 @@ interface Movement {
   "description": string,
   "absoluteName": string,
   "distance": number,
-  "coordinates": {
-    "vector": string,
-    "start": {
-      "x": number,
+  "coordinates": IMovementCoordinates
+}
+
+interface IMovementCoordinates  {
+ "vector": string,
+  "start": {
+    "x": number,
       "y": number
-    },
-    "end": {
-      "x": number,
+  },
+  "end": {
+    "x": number,
       "y": number
-    }
   }
 }
 
 type GetStepSequenceType =  Movement[];
 
-export type {Movement, GetStepSequenceType}
+export type {Movement, IMovementCoordinates, GetStepSequenceType}
