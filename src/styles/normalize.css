@@ -1,0 +1,101 @@
+/*! normalize.css (compact) | MIT License | github.com/necolas/normalize.css */
+
+/* Document
+   ========================================================================== */
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Sections
+   ========================================================================== */
+body {
+    margin: 0;
+}
+
+/* Grouping content
+   ========================================================================== */
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+/* Text-level semantics
+   ========================================================================== */
+a {
+    background-color: transparent;
+}
+
+b, strong {
+    font-weight: bolder;
+}
+
+small {
+    font-size: 80%;
+}
+
+/* Embedded content
+   ========================================================================== */
+img {
+    border-style: none;
+}
+
+/* Forms
+   ========================================================================== */
+button, input, optgroup, select, textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+
+button, input {
+    overflow: visible;
+}
+
+button, select {
+    text-transform: none;
+}
+
+button, [type="button"], [type="reset"], [type="submit"] {
+    -webkit-appearance: button;
+}
+
+/* Interactive
+   ========================================================================== */
+[hidden] {
+    display: none;
+}
+
+/*! normalize.css (with lists normalization) | MIT License */
+
+/* Lists
+   ========================================================================== */
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside; /* Перенос маркеров внутрь при переносе строк */
+}
+
+/* Убираем стандартные маркеры для всех списков */
+ul {
+    list-style-type: none;
+}
+
+/* Для нумерованных списков оставляем цифры, но сбрасываем отступы */
+ol {
+    list-style-type: decimal;
+}
+
+/* Вложенные списки получают стандартные отступы */
+ul ul, ol ol, ul ol, ol ul {
+    margin-left: 1em; /* Отступ для вложенности */
+    padding-left: 1em;
+}
+
+/* Элементы списка */
+li {
+    margin: 0;
+    padding: 0;
+}

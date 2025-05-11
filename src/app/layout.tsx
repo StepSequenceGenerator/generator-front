@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import '@/styles/normalize.css';
 import './globals.css';
 import EmotionProvider from '@/components/EmotionProvider';
 import { ReactNode } from 'react';
