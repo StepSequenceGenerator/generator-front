@@ -1,6 +1,6 @@
 import { IMovementCoordinates, Movement } from '@/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
-import { Line, Canvas, Circle } from 'fabric';
+import { Line, Canvas, Circle, Path } from 'fabric';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -12,8 +12,9 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     if (movements.length > 0) {
       movements.forEach((movement, index) => {
-        const line = renderLine(movement.coordinates, factor);
+        const line = renderSingleCurve(movement.coordinates, factor);
         fabricCanvasRef.current?.add(line);
+        fabricCanvasRef.current?.renderAll();
         if (index === 0) {
           addConnectionMarker(movement.coordinates.start, factor);
         }
@@ -31,6 +32,27 @@ export default function useFabricCanvas(movements: Movement[]) {
         strokeWidth: 2,
       }
     );
+  }
+
+  function renderSingleCurve(coordinates: IMovementCoordinates, factor: number) {
+    const RATIO_HEIGHT = 3;
+    const { start, end } = coordinates;
+    // Параметры дуги
+    const width = 20; // Ширина эллипса
+    const height = 10; // Высота эллипса
+
+    // Создаем путь для верхней половины эллипса с острыми концами
+    const arc = new Path(
+      `M ${start.x} ${start.y} 
+                             A ${width / 2} ${height} 0 0 1 ${width / 2} 0`,
+      {
+        stroke: 'blue',
+        strokeWidth: 3,
+        fill: '',
+        strokeLineCap: 'square', // Острые углы
+      }
+    );
+    return arc;
   }
 
   function addConnectionMarker(
