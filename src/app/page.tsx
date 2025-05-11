@@ -1,6 +1,6 @@
 'use client';
 import Container from '@/components/ui/container/Container';
-import { Button, Input, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import Header from '@/components/header/Header';
 import Main from '@/components/ui/main/Main';
 import TextScreen from '@/components/text-screen/TextScreen';
@@ -27,7 +27,7 @@ export default function Home() {
       <Header />
       <Main>
         <Container>
-          <Button variant="contained" onClick={getTest}>
+          <Button variant="contained" onClick={onGetSequence}>
             Сгенерировать дорожку
           </Button>
           <BaseContentContainer>

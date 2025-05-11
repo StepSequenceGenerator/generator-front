@@ -1,6 +1,6 @@
 import useFabricCanvas from '@/hooks/useFabricCanvas';
 import { Movement } from '@/types/sg-api/response-types';
-import style from './track-2d.module.scss';
+
 type Track2DProps = {
   movements: Movement[];
 };
