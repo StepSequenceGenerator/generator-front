@@ -1,31 +1,36 @@
-'use client';
-
+'use client'
 import Container from '@/components/ui/container/Container';
 import { Button, Input, TextField } from '@mui/material';
 import Header from '@/components/header/Header';
 import Main from '@/components/ui/main/Main';
 import TextScreen from '@/components/text-screen/TextScreen';
-import { getStepSequence } from '@/connections/sg-api';
-import { useState } from 'react';
-import { apiStepSequenceType } from '@/types/step-sequence-type';
+import { sgApi } from '@/api/sequence-generator/methods-sg-api';
+import {useState} from 'react';
+import type {Movement} from '@/types/sg-api/response-types'
+import Track2D from '@/components/track-2d/Track2D';
 
 export default function Home() {
-  const [sequence, setSequence] = useState<apiStepSequenceType[]>([]);
+  const [stepSequence, setStepSequence] = useState<Movement[]>([]);
 
-  const onGetSequence = async () => {
-    const sequence = await getStepSequence();
-    setSequence(sequence.data);
-  };
+   async function onGetSequence () {
+    const response = await sgApi.getStepSequence();
+    setStepSequence(response.data);
+  }
 
+  function getTest() {
+     const data = sgApi.test()
+    setStepSequence(data)
+  }
   return (
     <>
       <Header />
       <Main>
         <Container>
-          <Button variant="contained" onClick={onGetSequence}>
-            Сгенерировать дорожку
-          </Button>
-          <TextScreen sequence={sequence} />
+          <Button variant="contained" onClick={getTest}>Сгенерировать дорожку</Button>
+          <TextScreen stepSequence={stepSequence} />
+          <div>
+            <Track2D movements={stepSequence}/>
+          </div>
         </Container>
       </Main>
     </>

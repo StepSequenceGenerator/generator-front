@@ -1,6 +1,6 @@
 const config = {
   "reactStrictMode": true,
-  "output": "standalone",
+  "output": "standalone"
 };
 
 module.exports = config;
