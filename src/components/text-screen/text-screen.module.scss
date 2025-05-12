@@ -1,6 +1,10 @@
 .textScreen {
   padding: .5rem;
   width: 100%;
+  height: 400px;
+
+  overflow-y: scroll ;
+
 
   border: 1px solid var(--border-color);
 }
