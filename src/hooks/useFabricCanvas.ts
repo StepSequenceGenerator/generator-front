@@ -20,7 +20,7 @@ export default function useFabricCanvas(movements: Movement[]) {
         fabricCanvasRef.current?.add(line);
         fabricCanvasRef.current?.renderAll();
         if (index === 0) {
-          addConnectionMarker(movement.coordinates.start, factor);
+          addConnectionMarker(movement.coordinates.start, factor, 'red');
         }
         addConnectionMarker(movement.coordinates.end, factor);
       });
@@ -62,10 +62,11 @@ export default function useFabricCanvas(movements: Movement[]) {
 
   function addConnectionMarker(
     coordinates: { x: number; y: number },
-    factor: number
+    factor: number,
+    color: string = '#FA8072'
   ) {
     const { x, y } = coordinates;
-    const color = '#FA8072';
+
     const RADIUS = 4;
     const marker = new Circle({
       left: x * factor - RADIUS,
