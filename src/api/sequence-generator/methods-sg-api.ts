@@ -191,12 +191,107 @@ export const sgApi = {
     sequenceLevel: SequenceLevelType = 4,
     distanceFactor: DistanceFactorType = 3
   ) {
-    return sgInstance.get<GetStepSequenceType>(`/sg-step`, {
-      params: {
-        sequenceLevel: sequenceLevel,
-        distanceFactor: distanceFactor,
-      },
-    });
+    // return sgInstance.get<GetStepSequenceType>(`/sg-step`, {
+    //   params: {
+    //     sequenceLevel: sequenceLevel,
+    //     distanceFactor: distanceFactor,
+    //   },
+    // });
+
+    return {
+      data: [
+        {
+          id: 'ID98',
+          name: 'крюк вперед наружу на правой',
+          transitionDirection: 1,
+          rotationDirection: 2,
+          rotationDegree: 180,
+          startLeg: 1,
+          endLeg: 1,
+          isChangeLeg: false,
+          startEdge: 1,
+          endEdge: 1,
+          isChangeEdge: false,
+          isSpeedIncrease: false,
+          isDifficult: true,
+          type: 'turn',
+          description: '',
+          absoluteName: 'rocker',
+          distance: 2,
+          coordinates: {
+            vector: 'east',
+            start: {
+              x: 11,
+              y: 5,
+            },
+            end: {
+              x: 17,
+              y: 5,
+            },
+          },
+        },
+        {
+          id: 'ID122',
+          name: 'твизл вперед наружу на правой',
+          transitionDirection: 1,
+          rotationDirection: 2,
+          rotationDegree: 1080,
+          startLeg: 1,
+          endLeg: 1,
+          isChangeLeg: false,
+          startEdge: 1,
+          endEdge: 1,
+          isChangeEdge: false,
+          isSpeedIncrease: false,
+          isDifficult: true,
+          type: 'turn',
+          description: '',
+          absoluteName: 'twizzle',
+          distance: 3,
+          coordinates: {
+            vector: 'north',
+            start: {
+              x: 17,
+              y: 5,
+            },
+            end: {
+              x: 17,
+              y: 14,
+            },
+          },
+        },
+        {
+          id: 'ID101',
+          name: 'крюк назад внутрь на правой',
+          transitionDirection: 2,
+          rotationDirection: 2,
+          rotationDegree: 180,
+          startLeg: 1,
+          endLeg: 1,
+          isChangeLeg: false,
+          startEdge: 0,
+          endEdge: 0,
+          isChangeEdge: false,
+          isSpeedIncrease: false,
+          isDifficult: true,
+          type: 'turn',
+          description: '',
+          absoluteName: 'rocker',
+          distance: 2,
+          coordinates: {
+            vector: 'west',
+            start: {
+              x: 17,
+              y: 14,
+            },
+            end: {
+              x: 11,
+              y: 14,
+            },
+          },
+        },
+      ],
+    };
   },
   test() {
     return movements;
