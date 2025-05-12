@@ -12,7 +12,11 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     if (movements.length > 0) {
       movements.forEach((movement, index) => {
-        const line = renderSingleCurve(movement.coordinates, factor);
+        const line = renderSingleCurve(
+          movement.coordinates,
+          movement.distance,
+          factor
+        );
         fabricCanvasRef.current?.add(line);
         fabricCanvasRef.current?.renderAll();
         if (index === 0) {
@@ -34,25 +38,26 @@ export default function useFabricCanvas(movements: Movement[]) {
     );
   }
 
-  function renderSingleCurve(coordinates: IMovementCoordinates, factor: number) {
+  function renderSingleCurve(
+    coordinates: IMovementCoordinates,
+    distance: number,
+    factor: number
+  ) {
     const RATIO_HEIGHT = 3;
     const { start, end } = coordinates;
     // Параметры дуги
     const width = 20; // Ширина эллипса
     const height = 10; // Высота эллипса
-
+    const rx = width;
+    const ry = height;
+    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 1 ${end.x * factor} ${end.y * factor}`;
     // Создаем путь для верхней половины эллипса с острыми концами
-    const arc = new Path(
-      `M ${start.x} ${start.y} 
-                             A ${width / 2} ${height} 0 0 1 ${width / 2} 0`,
-      {
-        stroke: 'blue',
-        strokeWidth: 3,
-        fill: '',
-        strokeLineCap: 'square', // Острые углы
-      }
-    );
-    return arc;
+    return new Path(pathStr, {
+      stroke: 'blue',
+      strokeWidth: 3,
+      fill: '',
+      selectable: false,
+    });
   }
 
   function addConnectionMarker(
