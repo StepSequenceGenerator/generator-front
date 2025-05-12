@@ -49,9 +49,9 @@ export default function useFabricCanvas(movements: Movement[]) {
     let ry = 10;
     const deltaX = Math.abs(end.x - start.x);
     const deltaY = Math.abs(end.y - start.y);
-    if (deltaX > deltaY) {
+    if (deltaY === 0) {
       rx *= 2;
-    } else {
+    } else if (deltaX === 0) {
       ry *= 2;
     }
 
