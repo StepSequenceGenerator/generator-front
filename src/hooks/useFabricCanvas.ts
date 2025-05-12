@@ -43,13 +43,18 @@ export default function useFabricCanvas(movements: Movement[]) {
     distance: number,
     factor: number
   ) {
-    const RATIO_HEIGHT = 3;
     const { start, end } = coordinates;
     // Параметры дуги
-    const width = 20; // Ширина эллипса
-    const height = 10; // Высота эллипса
-    const rx = width;
-    const ry = height;
+    let rx = 10;
+    let ry = 10;
+    const deltaX = Math.abs(end.x - start.x);
+    const deltaY = Math.abs(end.y - start.y);
+    if (deltaX > deltaY) {
+      rx *= 2;
+    } else {
+      ry *= 2;
+    }
+
     const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 1 ${end.x * factor} ${end.y * factor}`;
     // Создаем путь для верхней половины эллипса с острыми концами
     return new Path(pathStr, {
