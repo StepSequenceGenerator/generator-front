@@ -1,10 +1,204 @@
-import {sgInstance} from '@/api/sequence-generator/instance-sg-api';
+import { sgInstance } from '@/api/sequence-generator/instance-sg-api';
 import { SequenceLevelType } from '@/types/sg-api/request-types';
-import { GetStepSequenceType } from '@/types/sg-api/response-types';
+import { GetStepSequenceType, Movement } from '@/types/sg-api/response-types';
+import { DistanceFactorType } from '@/types/distance-factor.type';
+
+const movements = [
+  {
+    id: 'ID110',
+    name: 'выкрюк вперед наружу на левой',
+    transitionDirection: 1,
+    rotationDirection: 2,
+    rotationDegree: 180,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 1,
+    endEdge: 1,
+    isChangeEdge: false,
+    isSpeedIncrease: false,
+    isDifficult: true,
+    type: 'turn',
+    description: '',
+    absoluteName: 'counter',
+    distance: 2,
+    coordinates: {
+      vector: 'north_east',
+      start: {
+        x: 6,
+        y: 36,
+      },
+      end: {
+        x: 8,
+        y: 38,
+      },
+    },
+  },
+  {
+    id: 'ID128',
+    name: 'твизл назад наружу на левой',
+    transitionDirection: 2,
+    rotationDirection: 2,
+    rotationDegree: 1080,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 1,
+    endEdge: 1,
+    isChangeEdge: false,
+    isSpeedIncrease: false,
+    isDifficult: true,
+    type: 'turn',
+    description: '',
+    absoluteName: 'twizzle',
+    distance: 3,
+    coordinates: {
+      vector: 'south_east',
+      start: {
+        x: 8,
+        y: 38,
+      },
+      end: {
+        x: 11,
+        y: 35,
+      },
+    },
+  },
+  {
+    id: 'ID129',
+    name: 'твизл назад внутрь на левой',
+    transitionDirection: 2,
+    rotationDirection: 1,
+    rotationDegree: 1080,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 0,
+    endEdge: 0,
+    isChangeEdge: false,
+    isSpeedIncrease: false,
+    isDifficult: true,
+    type: 'turn',
+    description: '',
+    absoluteName: 'twizzle',
+    distance: 3,
+    coordinates: {
+      vector: 'south',
+      start: {
+        x: 11,
+        y: 35,
+      },
+      end: {
+        x: 11,
+        y: 32,
+      },
+    },
+  },
+  {
+    id: 'ID67',
+    name: 'подпрыжка назад на правой на левую с полуповоротом влево',
+    transitionDirection: 2,
+    rotationDirection: 1,
+    rotationDegree: 180,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 0,
+    endEdge: 1,
+    isChangeEdge: true,
+    isSpeedIncrease: true,
+    isDifficult: false,
+    type: 'hop',
+    description: '',
+    absoluteName: 'unknown',
+    distance: 1,
+    coordinates: {
+      vector: 'east',
+      start: {
+        x: 11,
+        y: 32,
+      },
+      end: {
+        x: 12,
+        y: 32,
+      },
+    },
+  },
+  {
+    id: 'ID102',
+    name: 'крюк вперед наружу на левой',
+    transitionDirection: 1,
+    rotationDirection: 1,
+    rotationDegree: 180,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 1,
+    endEdge: 1,
+    isChangeEdge: false,
+    isSpeedIncrease: false,
+    isDifficult: true,
+    type: 'turn',
+    description: '',
+    absoluteName: 'rocker',
+    distance: 2,
+    coordinates: {
+      vector: 'south_east',
+      start: {
+        x: 12,
+        y: 32,
+      },
+      end: {
+        x: 14,
+        y: 30,
+      },
+    },
+  },
+  {
+    id: 'ID120',
+    name: 'петля назад наружу на левой',
+    transitionDirection: 2,
+    rotationDirection: 2,
+    rotationDegree: 360,
+    startLeg: 0,
+    endLeg: 0,
+    isChangeLeg: false,
+    startEdge: 1,
+    endEdge: 1,
+    isChangeEdge: false,
+    isSpeedIncrease: false,
+    isDifficult: true,
+    type: 'turn',
+    description: '',
+    absoluteName: 'loop',
+    distance: 1,
+    coordinates: {
+      vector: 'east',
+      start: {
+        x: 14,
+        y: 30,
+      },
+      end: {
+        x: 15,
+        y: 30,
+      },
+    },
+  },
+] as Movement[];
 
 export const sgApi = {
-  getStepSequence(sequenceLevel: SequenceLevelType = 1) {
-    return sgInstance.get<GetStepSequenceType>(`/sg-step`);
+  getStepSequence(
+    sequenceLevel: SequenceLevelType = 1,
+    distanceFactor: DistanceFactorType = 3
+  ) {
+    return sgInstance.get<GetStepSequenceType>(`/sg-step`, {
+      params: {
+        sequenceLevel: sequenceLevel,
+        distanceFactor: distanceFactor,
+      },
+    });
+  },
+  test() {
+    return movements;
   },
 };
-

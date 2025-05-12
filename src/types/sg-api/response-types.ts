@@ -14,9 +14,23 @@ interface Movement {
   "isDifficult": boolean,
   "type": string,
   "description": string,
-  "absoluteName": string
+  "absoluteName": string,
+  "distance": number,
+  "coordinates": IMovementCoordinates
+}
+
+interface IMovementCoordinates  {
+ "vector": string,
+  "start": {
+    "x": number,
+      "y": number
+  },
+  "end": {
+    "x": number,
+      "y": number
+  }
 }
 
 type GetStepSequenceType =  Movement[];
 
-export type {Movement, GetStepSequenceType}
+export type {Movement, IMovementCoordinates, GetStepSequenceType}
