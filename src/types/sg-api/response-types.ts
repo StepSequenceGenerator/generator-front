@@ -1,36 +1,36 @@
 interface Movement {
-  "id": string,
-  "name": string,
-  "transitionDirection": number,
-  "rotationDirection": number,
-  "rotationDegree": number,
-  "startLeg": number,
-  "endLeg": number,
-  "isChangeLeg": boolean,
-  "startEdge": number,
-  "endEdge": number,
-  "isChangeEdge": boolean,
-  "isSpeedIncrease": boolean,
-  "isDifficult": boolean,
-  "type": string,
-  "description": string,
-  "absoluteName": string,
-  "distance": number,
-  "coordinates": IMovementCoordinates
+  id: string;
+  name: string;
+  transitionDirection: string;
+  rotationDirection: number;
+  rotationDegree: number;
+  startLeg: string;
+  endLeg: string;
+  isChangeLeg: boolean;
+  startEdge: string;
+  endEdge: string;
+  isChangeEdge: boolean;
+  isSpeedIncrease: boolean;
+  isDifficult: boolean;
+  type: string;
+  description: string;
+  absoluteName: string;
+  distance: number;
+  coordinates: IMovementCoordinates;
 }
 
-interface IMovementCoordinates  {
- "vector": string,
-  "start": {
-    "x": number,
-      "y": number
-  },
-  "end": {
-    "x": number,
-      "y": number
-  }
+interface IMovementCoordinates {
+  vector: string;
+  start: {
+    x: number;
+    y: number;
+  };
+  end: {
+    x: number;
+    y: number;
+  };
 }
 
-type GetStepSequenceType =  Movement[];
+type GetStepSequenceType = Movement[];
 
-export type {Movement, IMovementCoordinates, GetStepSequenceType}
+export type { Movement, IMovementCoordinates, GetStepSequenceType };

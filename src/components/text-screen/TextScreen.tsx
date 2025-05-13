@@ -14,7 +14,7 @@ export default function TextScreen(props: TextScreenProps) {
       <ol>
         {stepSequence.map((item) => (
           <li key={item.id}>
-            {item.name}: {item.type.toUpperCase()}
+            {item.name}: {item.startLeg} {item.startEdge} {item.transitionDirection}
           </li>
         ))}
       </ol>

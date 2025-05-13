@@ -1,6 +1,9 @@
 import { IMovementCoordinates, Movement } from '@/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
 import { Line, Canvas, Circle, Path, FabricImage } from 'fabric';
+import { bendFactorKeyFactory } from '@/lib/bend-factor-factory';
+import { BendFactorKeyType, BendFactorType } from '@/types/bend-factor-key.type';
+import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -12,10 +15,17 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     if (movements.length > 0) {
       movements.forEach((movement, index) => {
+        const bendFactorKey = bendFactorKeyFactory({
+          leg: movement.startLeg,
+          edge: movement.startEdge,
+          transitionDirection: movement.transitionDirection,
+        });
+        const bendFactor = getBendFactor(bendFactorKey);
         const line = renderSingleCurve(
           movement.coordinates,
           movement.distance,
-          factor
+          factor,
+          bendFactor
         );
         fabricCanvasRef.current?.add(line);
         fabricCanvasRef.current?.renderAll();
@@ -38,10 +48,15 @@ export default function useFabricCanvas(movements: Movement[]) {
     );
   }
 
+  function getBendFactor(key: BendFactorKeyType) {
+    return BEND_FACTOR_MAP.get(key) || (0 as BendFactorType);
+  }
+
   function renderSingleCurve(
     coordinates: IMovementCoordinates,
     distance: number,
-    factor: number
+    factor: number,
+    bendFactor: BendFactorType
   ) {
     const { start, end } = coordinates;
     // Параметры дуги
@@ -55,7 +70,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       ry *= 2;
     }
 
-    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 1 ${end.x * factor} ${end.y * factor}`;
+    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 ${bendFactor} ${end.x * factor} ${end.y * factor}`;
     // Создаем путь для верхней половины эллипса с острыми концами
     return new Path(pathStr, {
       stroke: 'blue',
