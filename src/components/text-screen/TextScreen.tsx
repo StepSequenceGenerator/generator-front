@@ -1,5 +1,5 @@
 import style from './text-screen.module.scss';
-import { Movement } from '@/types/sg-api/response-types';
+import { Movement } from '@/shared/types/sg-api/response-types';
 
 type TextScreenProps = {
   stepSequence: Movement[];

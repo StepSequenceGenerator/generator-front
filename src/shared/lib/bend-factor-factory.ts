@@ -1,4 +1,7 @@
-import { BendFactorKeyType, BendFactorType } from '@/types/bend-factor-key.type';
+import {
+  BendFactorKeyType,
+  BendFactorType,
+} from '@/shared/types/bend-factor-key.type';
 
 function bendFactorKeyFactory(data: {
   leg: string;

@@ -6,7 +6,7 @@ import Main from '@/components/ui/main/Main';
 import TextScreen from '@/components/text-screen/TextScreen';
 import { sgApi } from '@/api/sequence-generator/methods-sg-api';
 import { useState } from 'react';
-import type { Movement } from '@/types/sg-api/response-types';
+import type { Movement } from '@/shared/types/sg-api/response-types';
 import Track2D from '@/components/track-2d/Track2D';
 import BaseContentContainer from '@/components/ui/base-content-container/BaseContentContainer';
 

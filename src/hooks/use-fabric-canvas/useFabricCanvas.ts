@@ -1,9 +1,16 @@
-import { IMovementCoordinates, Movement } from '@/types/sg-api/response-types';
+import {
+  IMovementCoordinates,
+  Movement,
+} from '@/shared/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
 import { Line, Canvas, Circle, Path, FabricImage } from 'fabric';
-import { bendFactorKeyFactory } from '@/lib/bend-factor-factory';
-import { BendFactorKeyType, BendFactorType } from '@/types/bend-factor-key.type';
+import { bendFactorKeyFactory } from '@/shared/lib/bend-factor-factory';
+import {
+  BendFactorKeyType,
+  BendFactorType,
+} from '@/shared/types/bend-factor-key.type';
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/shared/consts/canvas.const';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -113,16 +120,17 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     FabricImage.fromURL('./img/InternationalRink.svg.png').then(
       (img: FabricImage) => {
-        img.scaleToWidth(canvas.width);
-        img.scaleToHeight(canvas.height);
+        img.scaleToWidth(fabricCanvasRef.current?.width || width);
+        img.scaleToHeight(fabricCanvasRef.current?.height || height);
         canvas.backgroundImage = img;
+        canvas.renderAll();
       }
     );
   }
 
   function getScreenSize() {
-    const UNIT_WIDTH = 60;
-    const UNIT_HEIGHT = 30;
+    const UNIT_WIDTH = CANVAS_WIDTH;
+    const UNIT_HEIGHT = CANVAS_HEIGHT;
     const FACTOR = 10;
     return {
       width: UNIT_WIDTH * FACTOR,

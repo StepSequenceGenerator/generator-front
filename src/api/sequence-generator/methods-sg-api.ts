@@ -1,7 +1,7 @@
 import { sgInstance } from '@/api/sequence-generator/instance-sg-api';
-import { SequenceLevelType } from '@/types/sg-api/request-types';
-import { GetStepSequenceType, Movement } from '@/types/sg-api/response-types';
-import { DistanceFactorType } from '@/types/distance-factor.type';
+import { SequenceLevelType } from '@/shared/types/sg-api/request-types';
+import { GetStepSequenceType, Movement } from '@/shared/types/sg-api/response-types';
+import { DistanceFactorType } from '@/shared/types/distance-factor.type';
 
 const movements = [
   {
@@ -371,7 +371,7 @@ export const sgApi = {
     sequenceLevel: SequenceLevelType = 1,
     distanceFactor: DistanceFactorType = 3
   ) {
-    return { data: movements };
+    // return { data: movements };
 
     return sgInstance.get<GetStepSequenceType>(`/sg-step`, {
       params: {

@@ -1,5 +1,5 @@
 import { axiosSgAPI } from '@/connections/axios-init';
-import { apiStepSequenceType } from '@/types/step-sequence-type';
+import { apiStepSequenceType } from '@/shared/types/step-sequence-type';
 
 export function getStepSequence() {
   return { data: response };

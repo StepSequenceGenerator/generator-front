@@ -1,5 +1,11 @@
-import { BendFactorType, BendFactorKeyType } from '@/types/bend-factor-key.type';
-import { bendFactorKeyFactory, bendFactorFactory } from '@/lib/bend-factor-factory';
+import {
+  BendFactorType,
+  BendFactorKeyType,
+} from '@/shared/types/bend-factor-key.type';
+import {
+  bendFactorKeyFactory,
+  bendFactorFactory,
+} from '@/shared/lib/bend-factor-factory';
 
 export const BEND_FACTOR_MAP = new Map<BendFactorKeyType, BendFactorType>([
   [
