@@ -117,8 +117,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       backgroundColor: '#eaeaea',
     });
     fabricCanvasRef.current = canvas;
-
-    FabricImage.fromURL('./img/InternationalRink.svg.png').then(
+    FabricImage.fromURL('/_next/static/img/InternationalRink.svg.png').then(
       (img: FabricImage) => {
         img.scaleToWidth(fabricCanvasRef.current?.width || width);
         img.scaleToHeight(fabricCanvasRef.current?.height || height);
