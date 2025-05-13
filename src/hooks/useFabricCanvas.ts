@@ -98,7 +98,7 @@ export default function useFabricCanvas(movements: Movement[]) {
 
   function getScreenSize() {
     const UNIT_WIDTH = 60;
-    const UNIT_HEIGHT = 40;
+    const UNIT_HEIGHT = 30;
     const FACTOR = 10;
     return {
       width: UNIT_WIDTH * FACTOR,

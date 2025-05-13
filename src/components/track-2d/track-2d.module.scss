@@ -1,3 +1,13 @@
+@import "../../styles/vars.module.scss";
 .canvasContainer {
   position: relative;
+}
+
+@media (max-width: $screen-large) {
+  .canvasContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 }
