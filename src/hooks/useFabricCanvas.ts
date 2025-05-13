@@ -1,14 +1,14 @@
 import { IMovementCoordinates, Movement } from '@/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
-import { Line, Canvas, Circle, Path } from 'fabric';
+import { Line, Canvas, Circle, Path, FabricImage } from 'fabric';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
 
-  function renderCanvas(canvas: HTMLCanvasElement) {
+  function renderCanvas(canvasHtml: HTMLCanvasElement) {
     const { width, height, factor } = getScreenSize();
-    initFabricCanvas(canvas, width, height);
+    initFabricCanvas(canvasHtml, width, height);
 
     if (movements.length > 0) {
       movements.forEach((movement, index) => {
@@ -85,15 +85,24 @@ export default function useFabricCanvas(movements: Movement[]) {
   }
 
   function initFabricCanvas(
-    canvas: HTMLCanvasElement,
+    canvasHtml: HTMLCanvasElement,
     width: number,
     height: number
   ) {
-    fabricCanvasRef.current = new Canvas(canvas, {
+    const canvas = new Canvas(canvasHtml, {
       width: width,
       height: height,
       backgroundColor: '#eaeaea',
     });
+    fabricCanvasRef.current = canvas;
+
+    FabricImage.fromURL('/img/InternationalRink.svg.png').then(
+      (img: FabricImage) => {
+        img.scaleToWidth(canvas.width);
+        img.scaleToHeight(canvas.height);
+        canvas.backgroundImage = img;
+      }
+    );
   }
 
   function getScreenSize() {
