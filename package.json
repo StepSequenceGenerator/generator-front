@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "copy-public": "cp -r ./public/* ./.next/standalone/",
+    "copy-public": "cp -r ./public/* ./.next/static/",
     "prebuild": "tsx scripts/compile-next-config.ts",
     "postbuild": "npm run copy-public",
     "build": "npm run prebuild && next build && npm run postbuild",
