@@ -11,6 +11,7 @@ import {
 } from '@/shared/types/bend-factor-key.type';
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/shared/consts/canvas.const';
+import { IFigurePathTool } from '@/shared/types/figure-path-tool.type';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -27,6 +28,7 @@ export default function useFabricCanvas(movements: Movement[]) {
           edge: movement.startEdge,
           transitionDirection: movement.transitionDirection,
         });
+
         const bendFactor = getBendFactor(bendFactorKey);
         const line = renderSingleCurve(
           movement.coordinates,
@@ -78,7 +80,7 @@ export default function useFabricCanvas(movements: Movement[]) {
     }
 
     const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 ${bendFactor} ${end.x * factor} ${end.y * factor}`;
-    // Создаем путь для верхней половины эллипса с острыми концами
+
     return new Path(pathStr, {
       stroke: 'blue',
       strokeWidth: 3,
@@ -122,10 +124,52 @@ export default function useFabricCanvas(movements: Movement[]) {
       (img: FabricImage) => {
         img.scaleToWidth(fabricCanvasRef.current?.width || width);
         img.scaleToHeight(fabricCanvasRef.current?.height || height);
-        canvas.backgroundImage = img;
+        if (fabricCanvasRef.current) {
+          fabricCanvasRef.current.backgroundImage = img;
+        }
         canvas.renderAll();
       }
     );
+
+    drawCheckmark(canvas, 300, 200, 50);
+  }
+
+  function drawCheckmark(
+    canvas: Canvas,
+    x: number,
+    y: number,
+    size: number = 10,
+    color: string = 'green'
+  ) {
+    // const path = `M ${x} ${y} L ${x + 10} ${y + 10} L ${x + 10} ${y + 10}`;
+    // const path = 'M 20 50 L 30 70 L 40 50';
+    const pathTool: IFigurePathTool = {
+      delta: 10,
+      x: 20,
+      y: 50,
+      get x1() {
+        return this.x + this.delta;
+      },
+      get y1() {
+        return this.y + this.delta;
+      },
+    };
+    const path = `M ${pathTool.x} ${pathTool.y} A 10 20 0 0 1 30 70 A 10 20 0 0 1 40 50`;
+    const scale = size / 100;
+
+    const checkmark = new Path(path, {
+      left: x,
+      top: y,
+      stroke: color,
+      strokeWidth: 3,
+      fill: '',
+      // scaleX: scale,
+      // scaleY: scale,
+      selectable: false,
+    });
+
+    canvas.add(checkmark);
+    canvas.renderAll();
   }
 
   function getScreenSize() {
