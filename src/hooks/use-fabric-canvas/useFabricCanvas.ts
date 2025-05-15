@@ -118,6 +118,7 @@ export default function useFabricCanvas(movements: Movement[]) {
         img.scaleToWidth(canvas.width);
         img.scaleToHeight(canvas.height);
         canvas.backgroundImage = img;
+        canvas.renderAll();
       }
     );
   }
