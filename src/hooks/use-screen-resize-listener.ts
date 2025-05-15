@@ -1,3 +1,4 @@
+import * as lodash from 'lodash';
 import { useEffect, useState } from 'react';
 
 function getScreenSize() {
@@ -7,6 +8,8 @@ function getScreenSize() {
 export function useScreenResizeListener() {
   const [screenWidth, setScreenWidth] = useState(getScreenSize());
 
+  const listenScreenResizeDebounce = lodash.debounce(listenScreenResize, 200);
+
   function listenScreenResize() {
     const width = getScreenSize();
     setScreenWidth(width);
@@ -14,9 +17,9 @@ export function useScreenResizeListener() {
 
   useEffect(() => {
     setScreenWidth(getScreenSize());
-    window.addEventListener('resize', listenScreenResize);
+    window.addEventListener('resize', listenScreenResizeDebounce);
     return () => {
-      window.removeEventListener('resize', listenScreenResize);
+      window.removeEventListener('resize', listenScreenResizeDebounce);
     };
   }, []);
 
