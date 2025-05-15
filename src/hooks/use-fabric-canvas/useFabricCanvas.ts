@@ -10,14 +10,17 @@ import {
   BendFactorType,
 } from '@/shared/types/bend-factor-key.type';
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/shared/consts/canvas.const';
+import { useScreenResizeListener } from '@/hooks/use-screen-resize-listener';
+import { calcCanvasSize } from '@/hooks/use-fabric-canvas/calc-canvas-size';
 
 export default function useFabricCanvas(movements: Movement[]) {
+  const screenWidth = useScreenResizeListener();
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
 
   function renderCanvas(canvasHtml: HTMLCanvasElement) {
-    const { width, height, factor } = getScreenSize();
+    const { width, height, factor } = calcCanvasSize(screenWidth);
     initFabricCanvas(canvasHtml, width, height);
 
     if (movements.length > 0) {
@@ -123,17 +126,6 @@ export default function useFabricCanvas(movements: Movement[]) {
     );
   }
 
-  function getScreenSize() {
-    const UNIT_WIDTH = 60;
-    const UNIT_HEIGHT = 30;
-    const FACTOR = 10;
-    return {
-      width: UNIT_WIDTH * FACTOR,
-      height: UNIT_HEIGHT * FACTOR,
-      factor: FACTOR,
-    };
-  }
-
   useEffect(() => {
     if (!canvasRef.current) return;
     renderCanvas(canvasRef.current);
@@ -141,7 +133,7 @@ export default function useFabricCanvas(movements: Movement[]) {
     return () => {
       fabricCanvasRef.current?.dispose();
     };
-  }, [movements]);
+  }, [movements, screenWidth]);
 
   return canvasRef;
 }
