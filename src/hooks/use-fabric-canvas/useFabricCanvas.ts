@@ -12,6 +12,7 @@ import {
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/shared/consts/canvas.const';
 import { IFigurePathTool } from '@/shared/types/figure-path-tool.type';
+import { PathTool } from '@/hooks/use-fabric-canvas/PathTool';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -130,11 +131,14 @@ export default function useFabricCanvas(movements: Movement[]) {
       }
     );
 
-    drawCheckmark(canvas, 300, 200, 50);
+    drawCheckmark(canvas, 'south', 300, 200, 50);
+    drawCheckmark(canvas, 'east', 200, 100, 50);
+    drawCheckmark(canvas, 'south_east', 350, 200, 50);
   }
 
   function drawCheckmark(
     canvas: Canvas,
+    direction: string,
     x: number,
     y: number,
     size: number = 10,
@@ -142,18 +146,8 @@ export default function useFabricCanvas(movements: Movement[]) {
   ) {
     // const path = `M ${x} ${y} L ${x + 10} ${y + 10} L ${x + 10} ${y + 10}`;
     // const path = 'M 20 50 L 30 70 L 40 50';
-    const pathTool: IFigurePathTool = {
-      delta: 10,
-      x: 20,
-      y: 50,
-      get x1() {
-        return this.x + this.delta;
-      },
-      get y1() {
-        return this.y + this.delta;
-      },
-    };
-    const path = `M ${pathTool.x} ${pathTool.y} A 10 20 0 0 1 30 70 A 10 20 0 0 1 40 50`;
+
+    const path = PathTool.getPath(direction);
     const scale = size / 100;
 
     const checkmark = new Path(path, {
