@@ -191,7 +191,8 @@ export const sgApi = {
     sequenceLevel: SequenceLevelType = 1,
     distanceFactor: DistanceFactorType = 3
   ) {
-    return { data: movements };
+    // note для разработки
+    // return { data: movements };
 
     return sgInstance.get<GetStepSequenceType>(`/sg-step`, {
       params: {
