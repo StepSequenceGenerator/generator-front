@@ -1,12 +1,24 @@
 .header {
   width: 100%;
   position: fixed;
+  background: #fff;
+  z-index: 1000;
 }
 
 .headerContainer {
   padding: .5rem;
-  border: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header:after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  width: 100%;
+  height: 5px;
+
+  background: rgba(255, 255, 255, 0.5);
+
 }
