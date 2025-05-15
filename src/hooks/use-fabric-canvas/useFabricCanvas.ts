@@ -51,14 +51,10 @@ export default function useFabricCanvas(movements: Movement[]) {
     );
   }
 
-  function getBendFactor(key: BendFactorKeyType) {
-    return BEND_FACTOR_MAP.get(key) || (0 as BendFactorType);
-  }
-
   function renderSingleCurve(
     coordinates: IMovementCoordinates,
-    factor: number,
-    bendFactor: BendFactorType
+    distance: number,
+    factor: number
   ) {
     const { start, end } = coordinates;
     // Параметры дуги
@@ -72,8 +68,8 @@ export default function useFabricCanvas(movements: Movement[]) {
       ry *= 2;
     }
 
-    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 ${bendFactor} ${end.x * factor} ${end.y * factor}`;
-
+    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 1 ${end.x * factor} ${end.y * factor}`;
+    // Создаем путь для верхней половины эллипса с острыми концами
     return new Path(pathStr, {
       stroke: 'blue',
       strokeWidth: 3,
@@ -115,19 +111,16 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     FabricImage.fromURL('./img/InternationalRink.svg.png').then(
       (img: FabricImage) => {
-        img.scaleToWidth(fabricCanvasRef.current?.width || width);
-        img.scaleToHeight(fabricCanvasRef.current?.height || height);
-        if (fabricCanvasRef.current) {
-          fabricCanvasRef.current.backgroundImage = img;
-        }
-        canvas.renderAll();
+        img.scaleToWidth(canvas.width);
+        img.scaleToHeight(canvas.height);
+        canvas.backgroundImage = img;
       }
     );
   }
 
   function getScreenSize() {
-    const UNIT_WIDTH = CANVAS_WIDTH;
-    const UNIT_HEIGHT = CANVAS_HEIGHT;
+    const UNIT_WIDTH = 60;
+    const UNIT_HEIGHT = 30;
     const FACTOR = 10;
     return {
       width: UNIT_WIDTH * FACTOR,
