@@ -7,7 +7,7 @@ type TextScreenProps = {
 
 export default function TextScreen(props: TextScreenProps) {
   const { stepSequence } = props;
-
+  // todo показывать значок, если текста больше, чем на высоту катка
   if (stepSequence.length === 0) return <div></div>;
   return (
     <div className={style.textScreen}>

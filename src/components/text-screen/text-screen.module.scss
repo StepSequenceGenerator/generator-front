@@ -6,7 +6,13 @@
   height: 300px;
 
   overflow-y: scroll ;
-  border: 1px solid var(--border-color);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+}
+.textScreen::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: var(--screen-lagre)) {
