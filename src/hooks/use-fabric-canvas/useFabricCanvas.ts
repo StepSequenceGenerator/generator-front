@@ -51,10 +51,14 @@ export default function useFabricCanvas(movements: Movement[]) {
     );
   }
 
+  function getBendFactor(key: BendFactorKeyType) {
+    return BEND_FACTOR_MAP.get(key) || (0 as BendFactorType);
+  }
+
   function renderSingleCurve(
     coordinates: IMovementCoordinates,
-    distance: number,
-    factor: number
+    factor: number,
+    bendFactor: BendFactorType
   ) {
     const { start, end } = coordinates;
     // Параметры дуги
@@ -68,8 +72,8 @@ export default function useFabricCanvas(movements: Movement[]) {
       ry *= 2;
     }
 
-    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 1 ${end.x * factor} ${end.y * factor}`;
-    // Создаем путь для верхней половины эллипса с острыми концами
+    const pathStr = `M ${start.x * factor} ${start.y * factor} A ${rx} ${ry} 0 0 ${bendFactor} ${end.x * factor} ${end.y * factor}`;
+
     return new Path(pathStr, {
       stroke: 'blue',
       strokeWidth: 3,
