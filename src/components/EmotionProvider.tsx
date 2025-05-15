@@ -1,7 +1,7 @@
 'use client';
 
 import { CacheProvider } from '@emotion/react';
-import createEmotionCache from '../lib/emotionCash';
+import createEmotionCache from '@/shared/lib/emotionCash';
 import React from 'react';
 
 const clientSideEmotionCache = createEmotionCache();
@@ -11,7 +11,5 @@ export default function EmotionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <CacheProvider value={clientSideEmotionCache}>{children}</CacheProvider>
-  );
+  return <CacheProvider value={clientSideEmotionCache}>{children}</CacheProvider>;
 }

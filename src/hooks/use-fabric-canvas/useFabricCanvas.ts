@@ -1,6 +1,16 @@
-import { IMovementCoordinates, Movement } from '@/types/sg-api/response-types';
+import {
+  IMovementCoordinates,
+  Movement,
+} from '@/shared/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
 import { Line, Canvas, Circle, Path, FabricImage } from 'fabric';
+import { bendFactorKeyFactory } from '@/shared/lib/bend-factor-factory';
+import {
+  BendFactorKeyType,
+  BendFactorType,
+} from '@/shared/types/bend-factor-key.type';
+import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '@/shared/consts/canvas.const';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -12,11 +22,14 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     if (movements.length > 0) {
       movements.forEach((movement, index) => {
-        const line = renderSingleCurve(
-          movement.coordinates,
-          movement.distance,
-          factor
-        );
+        const bendFactorKey = bendFactorKeyFactory({
+          leg: movement.startLeg,
+          edge: movement.startEdge,
+          transitionDirection: movement.transitionDirection,
+        });
+
+        const bendFactor = getBendFactor(bendFactorKey);
+        const line = renderSingleCurve(movement.coordinates, factor, bendFactor);
         fabricCanvasRef.current?.add(line);
         fabricCanvasRef.current?.renderAll();
         if (index === 0) {
@@ -95,12 +108,12 @@ export default function useFabricCanvas(movements: Movement[]) {
       backgroundColor: '#eaeaea',
     });
     fabricCanvasRef.current = canvas;
-    FabricImage.fromURL('/_next/static/img/InternationalRink.svg.png').then(
+
+    FabricImage.fromURL('./img/InternationalRink.svg.png').then(
       (img: FabricImage) => {
         img.scaleToWidth(canvas.width);
         img.scaleToHeight(canvas.height);
         canvas.backgroundImage = img;
-        canvas.renderAll();
       }
     );
   }

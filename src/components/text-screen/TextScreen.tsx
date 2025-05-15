@@ -1,5 +1,5 @@
 import style from './text-screen.module.scss';
-import { Movement } from '@/types/sg-api/response-types';
+import { Movement } from '@/shared/types/sg-api/response-types';
 
 type TextScreenProps = {
   stepSequence: Movement[];
@@ -14,7 +14,7 @@ export default function TextScreen(props: TextScreenProps) {
       <ol>
         {stepSequence.map((item) => (
           <li key={item.id}>
-            {item.name}: {item.type.toUpperCase()}
+            {item.name}: {item.startLeg} {item.startEdge} {item.transitionDirection}
           </li>
         ))}
       </ol>
