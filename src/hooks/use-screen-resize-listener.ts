@@ -2,7 +2,7 @@ import * as lodash from 'lodash';
 import { useEffect, useState } from 'react';
 
 function getScreenSize() {
-  return window.innerWidth;
+  return typeof window !== 'undefined' ? window.innerWidth : 0;
 }
 
 export function useScreenResizeListener() {
@@ -17,10 +17,12 @@ export function useScreenResizeListener() {
 
   useEffect(() => {
     setScreenWidth(getScreenSize());
-    window.addEventListener('resize', listenScreenResizeDebounce);
-    return () => {
-      window.removeEventListener('resize', listenScreenResizeDebounce);
-    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', listenScreenResizeDebounce);
+      return () => {
+        window.removeEventListener('resize', listenScreenResizeDebounce);
+      };
+    }
   }, []);
 
   return screenWidth;
