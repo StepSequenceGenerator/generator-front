@@ -13,7 +13,7 @@ export default function TextScreen(props: TextScreenProps) {
     <div className={style.textScreen}>
       <ol>
         {stepSequence.map((item) => (
-          <li key={item.id}>
+          <li key={`${item.coordinates.start.x}-${item.coordinates.start.y}`}>
             {item.name}: {item.startLeg} {item.startEdge} {item.transitionDirection}
           </li>
         ))}
