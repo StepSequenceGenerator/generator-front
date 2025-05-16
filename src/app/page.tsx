@@ -18,10 +18,6 @@ export default function Home() {
     setStepSequence(response.data);
   }
 
-  function getTest() {
-    const data = sgApi.test();
-    setStepSequence(data);
-  }
   return (
     <>
       <Header />

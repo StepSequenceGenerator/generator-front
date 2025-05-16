@@ -12,6 +12,7 @@ import {
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { useScreenResizeListener } from '@/hooks/use-screen-resize-listener';
 import { calcCanvasSize } from '@/hooks/use-fabric-canvas/calc-canvas-size';
+import { stepTemplates } from '@/hooks/use-fabric-canvas/step-templates';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const screenWidth = useScreenResizeListener();
@@ -41,17 +42,6 @@ export default function useFabricCanvas(movements: Movement[]) {
         addConnectionMarker(movement.coordinates.end, factor);
       });
     }
-  }
-
-  function renderLine(coordinates: IMovementCoordinates, factor: number) {
-    const { start, end } = coordinates;
-    return new Line(
-      [start.x * factor, start.y * factor, end.x * factor, end.y * factor],
-      {
-        stroke: '#000000',
-        strokeWidth: 2,
-      }
-    );
   }
 
   function getBendFactor(key: BendFactorKeyType) {
@@ -124,6 +114,8 @@ export default function useFabricCanvas(movements: Movement[]) {
         canvas.renderAll();
       }
     );
+
+    stepTemplates(canvas);
   }
 
   useEffect(() => {
