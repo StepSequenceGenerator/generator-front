@@ -1,5 +1,6 @@
 import { Canvas, Textbox } from 'fabric';
 import { IMovementCoordinates } from '@/shared/types/sg-api/response-types';
+import { createTextbox } from '@/hooks/use-fabric-canvas/utlls/create-textbox';
 
 export function addNumberMarker(
   canvas: Canvas,
@@ -13,8 +14,8 @@ export function addNumberMarker(
 
   const offset = calcOffset(coordinates, factor);
   const adjustedCoordinates = {
-    x: coordinates.start.x * factor + offset.x,
-    y: coordinates.start.y * factor + offset.y,
+    left: coordinates.start.x * factor + offset.x,
+    top: coordinates.start.y * factor + offset.y,
   };
   const textBox = createTextbox(text, adjustedCoordinates);
   canvas.add(textBox);
@@ -23,8 +24,9 @@ export function addNumberMarker(
 function calcOffset(coordinates: IMovementCoordinates, factor: number) {
   const { start, end } = coordinates;
   const OFFSET = 15;
-  const xVector = (start.x * factor - end.x * factor) * -1;
-  const yVector = (start.y * factor - end.y * factor) * -1;
+  const DIRECTION_FACTOR = -1; // note чтобы по ходу вектора
+  const xVector = (start.x * factor - end.x * factor) * DIRECTION_FACTOR;
+  const yVector = (start.y * factor - end.y * factor) * DIRECTION_FACTOR;
   const length = Math.sqrt(xVector ** 2 + yVector ** 2);
   const xFactor = xVector / length;
   const yFactor = yVector / length;
@@ -33,16 +35,4 @@ function calcOffset(coordinates: IMovementCoordinates, factor: number) {
     x: OFFSET * xFactor,
     y: OFFSET * yFactor,
   };
-}
-
-function createTextbox(text: string, coordinates: { x: number; y: number }) {
-  const { x, y } = coordinates;
-  return new Textbox(text, {
-    left: x,
-    top: y,
-    fontSize: 16,
-    fontFamily: 'Arial',
-    fill: '#000000',
-    selectable: false,
-  });
 }
