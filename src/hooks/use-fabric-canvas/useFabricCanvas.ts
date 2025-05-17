@@ -3,7 +3,7 @@ import {
   Movement,
 } from '@/shared/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
-import { Line, Canvas, Circle, Path, FabricImage } from 'fabric';
+import { BaseFabricObject, Canvas, Circle, Path, FabricImage } from 'fabric';
 import { bendFactorKeyFactory } from '@/shared/lib/bend-factor-factory';
 import {
   BendFactorKeyType,
@@ -12,6 +12,7 @@ import {
 import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { useScreenResizeListener } from '@/hooks/use-screen-resize-listener';
 import { calcCanvasSize } from '@/hooks/use-fabric-canvas/calc-canvas-size';
+import { addNumberMarker } from '@/hooks/use-fabric-canvas/utlls/number-marker';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const screenWidth = useScreenResizeListener();
@@ -38,20 +39,16 @@ export default function useFabricCanvas(movements: Movement[]) {
         if (index === 0) {
           addConnectionMarker(movement.coordinates.start, factor, 'red');
         }
+        if (index > 0 && fabricCanvasRef.current !== null) {
+          addNumberMarker(fabricCanvasRef.current, {
+            text: String(index),
+            coordinates: movement.coordinates,
+            factor,
+          });
+        }
         addConnectionMarker(movement.coordinates.end, factor);
       });
     }
-  }
-
-  function renderLine(coordinates: IMovementCoordinates, factor: number) {
-    const { start, end } = coordinates;
-    return new Line(
-      [start.x * factor, start.y * factor, end.x * factor, end.y * factor],
-      {
-        stroke: '#000000',
-        strokeWidth: 2,
-      }
-    );
   }
 
   function getBendFactor(key: BendFactorKeyType) {
@@ -94,8 +91,8 @@ export default function useFabricCanvas(movements: Movement[]) {
 
     const RADIUS = 4;
     const marker = new Circle({
-      left: x * factor - RADIUS,
-      top: y * factor - RADIUS,
+      left: x * factor,
+      top: y * factor,
       radius: RADIUS,
       fill: color,
       stroke: '#000000',
@@ -103,7 +100,7 @@ export default function useFabricCanvas(movements: Movement[]) {
     });
     fabricCanvasRef.current?.add(marker);
   }
-
+  // todo проэкспериментировать с вынесением вызова из renderCanvas (иначе на каждую перерисовку происходит инициализация)
   function initFabricCanvas(
     canvasHtml: HTMLCanvasElement,
     width: number,
@@ -115,11 +112,19 @@ export default function useFabricCanvas(movements: Movement[]) {
       backgroundColor: '#eaeaea',
     });
     fabricCanvasRef.current = canvas;
+    BaseFabricObject.ownDefaults.originX = 'center';
+    BaseFabricObject.ownDefaults.originY = 'center';
 
     FabricImage.fromURL('/_next/static/img/InternationalRink.svg.png').then(
       (img: FabricImage) => {
         img.scaleToWidth(canvas.width);
         img.scaleToHeight(canvas.height);
+
+        img.set({
+          left: canvas.width! / 2,
+          top: canvas.height! / 2,
+        });
+
         canvas.backgroundImage = img;
         canvas.renderAll();
       }

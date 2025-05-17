@@ -1,5 +1,5 @@
 type BendFactorKeyType = string & { __brand: 'bendFactorKey' };
-type BendFactorType = 0 | (1 & { __brand: 'bendFactor' });
+type BendFactorType = (0 | 1) & { __brand: 'bendFactor' };
 
 type LegBendFactorKeyType = 'left' | 'right';
 type EdgeBendFactorKeyType = 'inner' | 'outer';
