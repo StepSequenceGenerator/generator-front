@@ -2,7 +2,7 @@ import { Canvas, Textbox } from 'fabric';
 import { IMovementCoordinates } from '@/shared/types/sg-api/response-types';
 import { createTextbox } from '@/hooks/use-fabric-canvas/utlls/create-textbox';
 
-export function addNumberMarker(
+export function createNumberMarker(
   canvas: Canvas,
   data: {
     text: string;
@@ -17,8 +17,7 @@ export function addNumberMarker(
     left: coordinates.start.x * factor + offset.x,
     top: coordinates.start.y * factor + offset.y,
   };
-  const textBox = createTextbox(text, adjustedCoordinates);
-  canvas.add(textBox);
+  return createTextbox(text, adjustedCoordinates);
 }
 
 function calcOffset(coordinates: IMovementCoordinates, factor: number) {
