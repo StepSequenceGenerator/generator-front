@@ -13,6 +13,7 @@ import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { useScreenResizeListener } from '@/hooks/use-screen-resize-listener';
 import { calcCanvasSize } from '@/hooks/use-fabric-canvas/calc-canvas-size';
 import { createNumberMarker } from '@/hooks/use-fabric-canvas/utlls/number-marker';
+import { animateLine } from '@/hooks/use-fabric-canvas/utlls/animate';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const screenWidth = useScreenResizeListener();
@@ -36,6 +37,14 @@ export default function useFabricCanvas(movements: Movement[]) {
         const line = createSingleCurve(movement.coordinates, factor, bendFactor);
         fabricCanvasRef.current?.add(line);
 
+        fabricCanvasRef.current?.requestRenderAll();
+
+        requestAnimationFrame(() => {
+          if (fabricCanvasRef.current) {
+            animateLine(fabricCanvasRef.current, line);
+          }
+        });
+
         if (index === 0) {
           const startMarker = createConnectionMarker(
             movement.coordinates.start,
@@ -56,7 +65,7 @@ export default function useFabricCanvas(movements: Movement[]) {
         const marker = createConnectionMarker(movement.coordinates.end, factor);
         fabricCanvasRef.current?.add(marker);
       });
-      fabricCanvasRef.current?.renderAll();
+      fabricCanvasRef.current?.requestRenderAll();
     }
   }
 
@@ -118,6 +127,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       width: width,
       height: height,
       backgroundColor: '#eaeaea',
+      renderOnAddRemove: false,
     });
     fabricCanvasRef.current = canvas;
     BaseFabricObject.ownDefaults.originX = 'center';
