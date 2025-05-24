@@ -37,8 +37,6 @@ export default function useFabricCanvas(movements: Movement[]) {
         const line = createSingleCurve(movement.coordinates, factor, bendFactor);
         fabricCanvasRef.current?.add(line);
 
-        fabricCanvasRef.current?.requestRenderAll();
-
         requestAnimationFrame(() => {
           if (fabricCanvasRef.current) {
             animateLine(fabricCanvasRef.current, line);
@@ -127,7 +125,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       width: width,
       height: height,
       backgroundColor: '#eaeaea',
-      renderOnAddRemove: false,
+      renderOnAddRemove: true,
     });
     fabricCanvasRef.current = canvas;
     BaseFabricObject.ownDefaults.originX = 'center';
