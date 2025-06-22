@@ -22,7 +22,6 @@ export function useFabricCanvasTest() {
     const line = createLine([300, 150, 400, 150]);
     fabricCanvasRef.current.add(line);
     animateLineDraw(fabricCanvasRef.current, line);
-    fabricCanvasRef.current.renderAll(); // Явный рендер
   }
 
   function initFabricCanvas(

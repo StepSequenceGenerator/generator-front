@@ -3,7 +3,14 @@ import {
   Movement,
 } from '@/shared/types/sg-api/response-types';
 import { useEffect, useRef } from 'react';
-import { BaseFabricObject, Canvas, Circle, Path, FabricImage } from 'fabric';
+import {
+  BaseFabricObject,
+  Canvas,
+  Circle,
+  Path,
+  FabricImage,
+  Textbox,
+} from 'fabric';
 import { bendFactorKeyFactory } from '@/shared/lib/bend-factor-factory';
 import {
   BendFactorKeyType,
@@ -13,7 +20,8 @@ import { BEND_FACTOR_MAP } from '@/hooks/use-fabric-canvas/bend-factor.map';
 import { useScreenResizeListener } from '@/hooks/use-screen-resize-listener';
 import { calcCanvasSize } from '@/hooks/use-fabric-canvas/calc-canvas-size';
 import { createNumberMarker } from '@/hooks/use-fabric-canvas/utlls/number-marker';
-import { animateLine } from '@/hooks/use-fabric-canvas/utlls/animate';
+import { animatePath } from '@/hooks/use-fabric-canvas/utlls/animate-path';
+import { animateOpacity } from '@/hooks/use-fabric-canvas/utlls/animate-opacity';
 
 export default function useFabricCanvas(movements: Movement[]) {
   const screenWidth = useScreenResizeListener();
@@ -37,12 +45,6 @@ export default function useFabricCanvas(movements: Movement[]) {
         const line = createSingleCurve(movement.coordinates, factor, bendFactor);
         fabricCanvasRef.current?.add(line);
 
-        requestAnimationFrame(() => {
-          if (fabricCanvasRef.current) {
-            animateLine(fabricCanvasRef.current, line);
-          }
-        });
-
         if (index === 0) {
           const startMarker = createConnectionMarker(
             movement.coordinates.start,
@@ -52,18 +54,42 @@ export default function useFabricCanvas(movements: Movement[]) {
           fabricCanvasRef.current?.add(startMarker);
         }
 
-        if (index > 0 && fabricCanvasRef.current !== null) {
-          const numberMarker = createNumberMarker(fabricCanvasRef.current, {
+        const connectionMarker = createConnectionMarker(
+          movement.coordinates.end,
+          factor
+        );
+        fabricCanvasRef.current?.add(connectionMarker);
+
+        let numberMarker: Textbox | null = null;
+        if (index > 0) {
+          numberMarker = createNumberMarker({
             text: String(index),
             coordinates: movement.coordinates,
             factor,
           });
           fabricCanvasRef.current?.add(numberMarker);
         }
-        const marker = createConnectionMarker(movement.coordinates.end, factor);
-        fabricCanvasRef.current?.add(marker);
+
+        requestAnimationFrame(() => {
+          if (fabricCanvasRef.current) {
+            animatePath(fabricCanvasRef.current, line, 1000, index * 1000);
+            animateOpacity(
+              fabricCanvasRef.current,
+              connectionMarker,
+              100,
+              index * 1000 + 500
+            );
+            if (numberMarker) {
+              animateOpacity(
+                fabricCanvasRef.current,
+                numberMarker,
+                100,
+                index * 1000 - 500
+              );
+            }
+          }
+        });
       });
-      fabricCanvasRef.current?.requestRenderAll();
     }
   }
 
@@ -95,6 +121,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       strokeWidth: 3,
       fill: '',
       selectable: false,
+      objectCaching: false,
     });
   }
 
@@ -113,6 +140,7 @@ export default function useFabricCanvas(movements: Movement[]) {
       fill: color,
       stroke: '#000000',
       strokeWidth: 1,
+      objectCaching: false,
     });
   }
 
@@ -142,10 +170,10 @@ export default function useFabricCanvas(movements: Movement[]) {
         });
 
         canvas.backgroundImage = img;
-        canvas.renderAll();
+        canvas.requestRenderAll();
       })
       .catch(() => {
-        canvas.renderAll();
+        canvas.requestRenderAll();
       });
   }
 
