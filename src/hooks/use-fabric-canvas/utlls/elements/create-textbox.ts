@@ -9,6 +9,7 @@ export function createTextbox(text: string, config: ITexboxConfig) {
     fontFamily: 'Arial',
     fill: '#000000',
     selectable: false,
+    objectCaching: false,
   };
   const adjustedConfig = Object.assign({}, defaultConfig, config);
   return new Textbox(text, adjustedConfig);
