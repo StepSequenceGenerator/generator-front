@@ -18,6 +18,8 @@ export default function useFabricCanvas(movements: Movement[]) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<Canvas | null>(null);
 
+  const PATH_DRAW_DURATION = 1000;
+
   function renderCanvas(canvasHtml: HTMLCanvasElement) {
     const { width, height, factor } = calcCanvasSize(screenWidth);
     initFabricCanvas(canvasHtml, width, height);
@@ -60,19 +62,24 @@ export default function useFabricCanvas(movements: Movement[]) {
 
       requestAnimationFrame(() => {
         if (fabricCanvasRef.current) {
-          animatePath(fabricCanvasRef.current, line, 1000, index * 1000);
+          animatePath(
+            fabricCanvasRef.current,
+            line,
+            PATH_DRAW_DURATION,
+            PATH_DRAW_DURATION * index
+          );
           animateOpacity(
             fabricCanvasRef.current,
             connectionMarker,
             100,
-            index * 1000 + 500
+            PATH_DRAW_DURATION * index + 500
           );
           if (numberMarker) {
             animateOpacity(
               fabricCanvasRef.current,
               numberMarker,
               100,
-              index * 1000 - 500
+              PATH_DRAW_DURATION * index - 500
             );
           }
         }
