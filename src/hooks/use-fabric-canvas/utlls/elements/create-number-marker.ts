@@ -1,5 +1,5 @@
 import { IMovementCoordinates } from '@/shared/types/sg-api/response-types';
-import { createTextbox } from '@/hooks/use-fabric-canvas/utlls/create-textbox';
+import { createTextbox } from '@/hooks/use-fabric-canvas/utlls/elements/create-textbox';
 
 export function createNumberMarker(data: {
   text: string;
